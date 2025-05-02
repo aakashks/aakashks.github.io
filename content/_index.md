@@ -14,6 +14,7 @@ bio = "programmer, he/him, we are young and life is fun"
 # avatar = "img/avatar.webp"
 links = [
     { name = "GitHub", icon = "github", url = "https://github.com/aakashks" },
+    { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/aakash-ks/" },
     { name = "Twitter", icon = "twitter", url = "https://twitter.com/aakashks_" },
     { name = "Email", icon = "email", url = "mailto:aakash@example.com" },
 ]
