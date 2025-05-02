@@ -137,12 +137,15 @@ add this in your .bashrc `ssh-keygen -f "/c/Users/msing/.ssh/known_hosts" -R "[p
 
 `ssh-keygen -R '[[paramganga.iitr.ac.in](http://paramganga.iitr.ac.in/)]:4422'`
 
-```bash
+add this in your ~/.ssh/config file
+
+```bash,name=~/.ssh/config
 Host paramganga.iitr.ac.in
   HostName paramganga.iitr.ac.in
   User <your_username>
   IdentityFile ~/.ssh/mac_to_pgiitr
   UserKnownHostsFile /dev/null
+  # Port 4422
 ```
 
 Add Port 4422 
@@ -158,6 +161,10 @@ make sure to use comment to hide name of your laptop
 and without passphrase
 
 for .pem files do → `chmod 400 file.pem`  (aws)
+
+
+
+> checkout more details and configurations at [my dotfiles repo](https://github.com/aakashks/dotfiles)
 
 ### More References
 
