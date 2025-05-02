@@ -2,6 +2,7 @@
 title = "Accessing GPUs on an HPC Cluster (Paramganga)"
 description = "A guide to accessing GPUs, using SLURM, and running jobs on Paramganga."
 tags = ["HPC", "SLURM", "Paramganga"]
+date = 2025-05-02T12:00:00+05:30
 +++
 
 To start gpu session from terminal right away
