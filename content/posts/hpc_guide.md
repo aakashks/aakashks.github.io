@@ -29,11 +29,9 @@ then in other tmux windows ssh into that gpu to get multiple bash instances open
 
 use `rsync`  instead of `scp` (faster and more efficient)
 
-`rsync -avz ~/Downloads/hwd_df.csv jarvis:/home/amz_ml_2024/`
+`rsync -avz ~/Downloads/hwd_df.csv <ssh_hostname>:/home/testuser/amz_ml_2024/`
 
-`rsync -avz bet:/scratch/be205_29/images_test jarvis:/home/imgs_tst`
-
-`rsync -avz bet:/home/be205_29/workplace/amz_ml_2024/rprt Downloads`
+`rsync -avz <ssh_hostname>:/home/testuser/workspace/project1/files ~/Downloads/`
 
 `scp` to copy files from local to hpc or hpc to local
 
@@ -74,7 +72,7 @@ run.sh
 #SBATCH --cpus-per-task=8
 #SBATCH --time=10:00:00
 #SBATCH --mail-type=BEGIN
-#SBATCH --mail-user=
+#SBATCH --mail-user=$USER
 #SBATCH --output=%x-%j.out
 
 # sleep 100
@@ -102,7 +100,7 @@ run.sh
 
 `scancel` to terminate queued or running jobs
 
-https://curc.readthedocs.io/en/latest/running-jobs/slurm-commands.html
+[SLURM Commands](https://curc.readthedocs.io/en/latest/running-jobs/slurm-commands.html)
 
 ### TMUX
 
@@ -116,12 +114,12 @@ https://curc.readthedocs.io/en/latest/running-jobs/slurm-commands.html
 
 ### Passwordless Login
 
-follow this https://wynton.ucsf.edu/hpc/howto/log-in-without-pwd.html
+follow [this](https://wynton.ucsf.edu/hpc/howto/log-in-without-pwd.html) to log in without a password
 use passwd to change password
 
 ### 1st time setup hpc
 
-add the following script in `/home/aakash_ks.iitr/.bashrc`
+add the following script in `/home/testuser/.bashrc`
 
 ```bash
 module load spack
@@ -129,7 +127,7 @@ source /home/apps/spack/share/spack/setup-env.sh
 spack load tmux
 ```
 
-follow https://docs.excl.ornl.gov/quick-start-guides/conda-and-spack-installation to setup miniconda in /home/$USER/miniconda3
+follow [Conda and Spack Installation Guide](https://docs.excl.ornl.gov/quick-start-guides/conda-and-spack-installation) to setup miniconda in /home/$USER/miniconda3
 
 [ssh using rsa id (passwordless)](https://wynton.ucsf.edu/hpc/howto/log-in-without-pwd.html)
 
@@ -149,7 +147,7 @@ Host paramganga.iitr.ac.in
 
 Add Port 4422 
 
-“””if showing error go to known_hosts file in .ssh and remove paramganga references or directly run the script “””
+you might need to manually remove the old host key from `~/.ssh/known_hosts` file in some situations
 
 generate ssh key and copy the public key on pc
 
@@ -159,24 +157,23 @@ make sure to use comment to hide name of your laptop
 
 and without passphrase
 
-for .pem files sometimes this need to be done → `chmod 400 file.pem`
+for .pem files do → `chmod 400 file.pem`  (aws)
 
 ### More References
 
-1. https://docs.excl.ornl.gov/quick-start-guides/conda-and-spack-installation
-2. https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial1/Lisa_Cluster.html
-3. https://rc-docs.northeastern.edu/en/latest/software/packagemanagers/spack.html
-4. https://hpc.nmsu.edu/discovery/slurm/gpu-jobs/
-5. [Dask - run slurm jobs within python only](https://docs.dask.org/en/stable/deploying-hpc.html) , [submitit (alternative, perhaps better with gpus)](https://github.com/facebookincubator/submitit)
-6. [mount remote file system locally](https://stackoverflow.com/questions/3407287/how-do-you-edit-files-over-ssh)
-7. [iterm2 tmux support](https://iterm2.com/documentation-tmux-integration.html)
-8. https://sites.google.com/nyu.edu/nyu-hpc/training-support/tutorials/slurm-tutorial
+1. [Conda and Spack Installation Guide (ORNL)](https://docs.excl.ornl.gov/quick-start-guides/conda-and-spack-installation)
+2. [UVA Deep Learning Cluster Tutorial](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial1/Lisa_Cluster.html)
+3. [Northeastern HPC Spack Documentation](https://rc-docs.northeastern.edu/en/latest/software/packagemanagers/spack.html)
+4. [NMSU Discovery Cluster: SLURM GPU Jobs](https://hpc.nmsu.edu/discovery/slurm/gpu-jobs/)
+5. [How to Mount a Remote File System Locally (Stack Overflow)](https://stackoverflow.com/questions/3407287/how-do-you-edit-files-over-ssh)
+6. [iTerm2 tmux Integration Documentation](https://iterm2.com/documentation-tmux-integration.html)
+7. [NYU HPC SLURM Tutorial](https://sites.google.com/nyu.edu/nyu-hpc/training-support/tutorials/slurm-tutorial)
 
 ### FairShare / Priority
 
 Regular use will decrease your fairshare, increasing wait time for next allocation. Hence, use the gpus responsibly
 
-1. https://curc.readthedocs.io/en/latest/running-jobs/slurm-commands.html
-2. https://hpcf.umbc.edu/ada/slurm/priority/
-3. https://docs.rc.fas.harvard.edu/kb/fairshare/
-4. https://docs.crc.ku.edu/how-to/fairshare-priority/
+1. [CU Research Computing SLURM Commands](https://curc.readthedocs.io/en/latest/running-jobs/slurm-commands.html)
+2. [UMBC Ada Cluster: SLURM Priority](https://hpcf.umbc.edu/ada/slurm/priority/)
+3. [Harvard FASRC Fairshare Documentation](https://docs.rc.fas.harvard.edu/kb/fairshare/)
+4. [KU CRC Fairshare Priority Guide](https://docs.crc.ku.edu/how-to/fairshare-priority/)
