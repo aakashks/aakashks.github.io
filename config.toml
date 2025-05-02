@@ -50,6 +50,7 @@ sections = [
   # { name = "tags", path = "/tags", is_external = false },
   { name = "student club", path = "https://dsgiitr.in", is_external = true },
   { name = "github", path = "https://github.com/aakashks", is_external = true },
+  { name = "kaggle", path = "https://www.kaggle.com/akscodes", is_external = true }
 ]
 blog_section_path = "/posts"
 
