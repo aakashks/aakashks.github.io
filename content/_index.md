@@ -8,10 +8,10 @@ lang = 'en'
 footer = false
 
 # If you don't want to display id/bio/avatar, simply comment out that line
-name = "Serene Demo"
-id = "serene"
+name = "Aakash Kumar Singh"
+id = "aakashks"
 bio = "programmer, he/him, we are young and life is fun"
-avatar = "img/avatar.webp"
+# avatar = "img/avatar.webp"
 links = [
     { name = "GitHub", icon = "github", url = "https://github.com/aakashks" },
     { name = "Twitter", icon = "twitter", url = "https://twitter.com/aakashks_" },
