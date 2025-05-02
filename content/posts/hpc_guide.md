@@ -2,7 +2,15 @@
 title = "Accessing GPUs on an HPC Cluster (Paramganga)"
 description = "A guide to accessing GPUs, using SLURM, and running jobs on Paramganga."
 tags = ["HPC", "SLURM", "Paramganga"]
-date = 2025-05-02T12:00:00+05:30
+date = 2025-05-02
+weight = 0
+draft = false
+render = false
+aliases = ["/hpc_guide", "/hpc-guide"]
+authors = ["Aakash Kumar Singh"]
+in_search_index = true
+
+template = "page.html"
 +++
 
 To start gpu session from terminal right away
