@@ -27,7 +27,7 @@ then in other tmux windows ssh into that gpu to get multiple bash instances open
 
 ### Transfer Files
 
-use `rsync`  instead of `scp` (faster and more efficient)
+use `rsync` instead of `scp` - it's super fast
 
 `rsync -avz ~/Downloads/hwd_df.csv <ssh_hostname>:/home/testuser/amz_ml_2024/`
 

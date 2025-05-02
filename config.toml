@@ -13,7 +13,7 @@ description = "My personal website and blog"
 
 
 default_language = "en"
-theme = "serene"
+theme = "serene"    # I like serene, futu, papermod
 output_dir = "public"
 
 minify_html = false
@@ -48,6 +48,7 @@ anchors = "on"
 sections = [
   { name = "posts", path = "/posts", is_external = false },
   # { name = "tags", path = "/tags", is_external = false },
+  { name = "student club", path = "https://dsgiitr.in", is_external = true },
   { name = "github", path = "https://github.com/aakashks", is_external = true },
 ]
 blog_section_path = "/posts"
