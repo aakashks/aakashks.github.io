@@ -9,9 +9,9 @@ in_search_index = true
 
 To start gpu session from terminal right away
 
-`srun -p gpu --ntasks=1 --cpus-per-gpu=20 --gres=gpu:2 --time=1-00:00:00 -n 1 --pty bash -i`
+`srun -p gpu --ntasks=1 --gres=gpu:2 --time=1-00:00:00 -n 1 --pty bash -i`
 
-# HPC and Slurm
+### Basics
 
 ```bash
 srun --nodes=1 --gres=gpu:1 --partition=gpu --ntasks-per-node=16 --time=1-00:00:00 --pty bash -i
@@ -39,7 +39,7 @@ use `rsync` instead of `scp` - it's super fast
 
 or use `scp ssh_name:/path/to/remote/file /path/to/local/file` instead in your terminal (given that ssh key is set, if not use `remote_user@remote_host` and enter pass)
 
-### access using terminal
+### Using terminal
 
 1. run `ssh {username}@paramganga.iitr.ac.in` . add port `-p 4422` if not on the IITR network or use vscode. optionally add `-o UserKnownHostsFile=/dev/null`
 2. enter password
