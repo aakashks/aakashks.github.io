@@ -8,7 +8,7 @@ compile_sass = true
 build_search_index = false
 
 
-title = "Aakash's Blog"
+title = "Aakash's Website"
 description = "My personal website and blog"
 
 
@@ -49,7 +49,8 @@ sections = [
   { name = "posts", path = "/posts", is_external = false },
   # { name = "tags", path = "/tags", is_external = false },
   { name = "dsgiitr", path = "https://dsgiitr.in", is_external = true },
-  { name = "kaggle", path = "https://www.kaggle.com/akscodes", is_external = true }
+  { name = "kaggle", path = "https://www.kaggle.com/akscodes", is_external = true },
+  { name = "cv", path = "https://drive.google.com/file/d/110ul_6lX88NPFn7vdXj9GoqkUqAeZRT3", is_external = true },
 ]
 blog_section_path = "/posts"
 
