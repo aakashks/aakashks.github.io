@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title>My Blog</title>
+	<subtitle>My blog site.</subtitle>
+	<link href="https://aakashks.github.io/posts/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://aakashks.github.io/posts/"/>
+	<updated>2025-05-02T00:00:00+00:00</updated>
+	<id>https://aakashks.github.io/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>Accessing GPUs on an HPC Cluster (Paramganga)</title>
+		<published>2025-05-02T00:00:00+00:00</published>
+		<updated>2025-05-02T00:00:00+00:00</updated>
+		<link href="https://aakashks.github.io/posts/hpc-guide/" type="text/html"/>
+		<id>https://aakashks.github.io/posts/hpc-guide/</id>
+		<content type="html">&lt;p&gt;To start gpu session from terminal right away&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;srun -p gpu --ntasks=1 --gres=gpu:2 --time=1-00:00:00 -n 1 --pty bash -i&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;basics&quot;&gt;Basics&lt;a class=&quot;zola-anchor&quot; href=&quot;#basics&quot; aria-label=&quot;Anchor link for: basics&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;srun&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;nodes&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;1&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;gres&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;gpu:1&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;partition&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;gpu&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;ntasks-per-node&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;16&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;time&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;1-00:00:00&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;pty&lt;&#x2F;span&gt; bash&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;i&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;use tmux sessions and remember login node&lt;&#x2F;p&gt;
+&lt;p&gt;allocate gpu in a tmux session&lt;&#x2F;p&gt;
+&lt;p&gt;then in other tmux windows ssh into that gpu to get multiple bash instances open&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;ssh gpu020&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;transfer-files&quot;&gt;Transfer Files&lt;a class=&quot;zola-anchor&quot; href=&quot;#transfer-files&quot; aria-label=&quot;Anchor link for: transfer-files&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;use &lt;code&gt;rsync&lt;&#x2F;code&gt; instead of &lt;code&gt;scp&lt;&#x2F;code&gt; - it&#x27;s super fast&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;rsync -avz ~&#x2F;Downloads&#x2F;hwd_df.csv &amp;lt;ssh_hostname&amp;gt;:&#x2F;home&#x2F;testuser&#x2F;amz_ml_2024&#x2F;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;rsync -avz &amp;lt;ssh_hostname&amp;gt;:&#x2F;home&#x2F;testuser&#x2F;workspace&#x2F;project1&#x2F;files ~&#x2F;Downloads&#x2F;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;scp&lt;&#x2F;code&gt; to copy files from local to hpc or hpc to local&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;scp –r &#x2F;home&#x2F;testuser testuser@&amp;lt;local IP&amp;gt;:&#x2F;dir&#x2F;dir&#x2F;file&lt;&#x2F;code&gt;to copy the files to your system&lt;&#x2F;p&gt;
+&lt;p&gt;or use &lt;code&gt;scp ssh_name:&#x2F;path&#x2F;to&#x2F;remote&#x2F;file &#x2F;path&#x2F;to&#x2F;local&#x2F;file&lt;&#x2F;code&gt; instead in your terminal (given that ssh key is set, if not use &lt;code&gt;remote_user@remote_host&lt;&#x2F;code&gt; and enter pass)&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;using-terminal&quot;&gt;Using terminal&lt;a class=&quot;zola-anchor&quot; href=&quot;#using-terminal&quot; aria-label=&quot;Anchor link for: using-terminal&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;run &lt;code&gt;ssh {username}@paramganga.iitr.ac.in&lt;&#x2F;code&gt; . add port &lt;code&gt;-p 4422&lt;&#x2F;code&gt; if not on the IITR network or use vscode. optionally add &lt;code&gt;-o UserKnownHostsFile=&#x2F;dev&#x2F;null&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;enter password&lt;&#x2F;li&gt;
+&lt;li&gt;start tmux session &lt;code&gt;tmux new -s my_session&lt;&#x2F;code&gt; or simply &lt;code&gt;tmux&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;get gpu node alloted by &lt;code&gt;srun --nodes=1 --gres=gpu:2 --partition=gpu --ntasks-per-node=16 --time=1-00:00:00 --pty bash -i&lt;&#x2F;code&gt;  you may use &lt;code&gt;--exclusive&lt;&#x2F;code&gt; in the tmux session&lt;&#x2F;li&gt;
+&lt;li&gt;exit tmux session and remember the login node&lt;&#x2F;li&gt;
+&lt;li&gt;after the process is run go to that login node and attach to that tmux session. use &lt;code&gt;squeue&lt;&#x2F;code&gt; to list the running jobs&lt;&#x2F;li&gt;
+&lt;li&gt;enter &lt;code&gt;exit&lt;&#x2F;code&gt; to logout&lt;&#x2F;li&gt;
+&lt;li&gt;make sure to remove refs from .ssh&#x2F;known_hosts using &lt;code&gt;ssh-keygen -R [paramganga.iitr.ac.in](http:&#x2F;&#x2F;paramganga.iitr.ac.in)&lt;&#x2F;code&gt; or by specifying &lt;code&gt;-o UserKnownHostsFile=&#x2F;dev&#x2F;null&lt;&#x2F;code&gt; or modify in config file&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;gpu&quot;&gt;GPU&lt;a class=&quot;zola-anchor&quot; href=&quot;#gpu&quot; aria-label=&quot;Anchor link for: gpu&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Old NVIDIA drivers of CUDA toolkit 11.6&lt;&#x2F;p&gt;
+&lt;p&gt;install pytorch and cuda relevant libraries for cu118 version (backward compatible for 116)&lt;&#x2F;p&gt;
+&lt;p&gt;pin that version in conda - don’t tamper your conda env again and again&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;shell-script-runs&quot;&gt;Shell Script runs&lt;a class=&quot;zola-anchor&quot; href=&quot;#shell-script-runs&quot; aria-label=&quot;Anchor link for: shell-script-runs&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;run.sh&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;!&#x2F;bin&#x2F;bash&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --job-name=j1&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --nodes=1&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --partition=gpu&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --gres=gpu:2&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --ntasks-per-node=4&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --cpus-per-task=8&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --time=10:00:00&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --mail-type=BEGIN&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --mail-user=$USER&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;SBATCH --output=%x-%j.out&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; sleep 100&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; papermill notebook.ipynb notebook_o.ipynb&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; CUDA_VISIBLE_DEVICES=0,1 python main.py&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;sbatch run.sh&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;module&quot;&gt;module&lt;a class=&quot;zola-anchor&quot; href=&quot;#module&quot; aria-label=&quot;Anchor link for: module&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;module avail&lt;&#x2F;code&gt;to list all available pkgs, be it on spack&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;slurm-and-other-account-mgmt&quot;&gt;slurm and other account mgmt&lt;a class=&quot;zola-anchor&quot; href=&quot;#slurm-and-other-account-mgmt&quot; aria-label=&quot;Anchor link for: slurm-and-other-account-mgmt&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;passwd&lt;&#x2F;code&gt; to change the password&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;sinfo -a&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;squeue -u $USER --start&lt;&#x2F;code&gt; list the user’s jobs with approx time after which it’d start&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;squeue -p gpu&lt;&#x2F;code&gt; view all gpu jobs&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;sacct&lt;&#x2F;code&gt; your job status &#x2F; history&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;scancel&lt;&#x2F;code&gt; to terminate queued or running jobs&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curc.readthedocs.io&#x2F;en&#x2F;latest&#x2F;running-jobs&#x2F;slurm-commands.html&quot;&gt;SLURM Commands&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tmux&quot;&gt;TMUX&lt;a class=&quot;zola-anchor&quot; href=&quot;#tmux&quot; aria-label=&quot;Anchor link for: tmux&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;On the command prompt, type &lt;code&gt;tmux&lt;&#x2F;code&gt;, (&lt;code&gt;tmux new -s my_session&lt;&#x2F;code&gt; for a named session)&lt;&#x2F;li&gt;
+&lt;li&gt;Run the desired program.&lt;&#x2F;li&gt;
+&lt;li&gt;Use the key sequence &lt;code&gt;Ctrl-b + d&lt;&#x2F;code&gt;to detach from the session.&lt;&#x2F;li&gt;
+&lt;li&gt;use &lt;code&gt;tmux ls&lt;&#x2F;code&gt; to list all sessions&lt;&#x2F;li&gt;
+&lt;li&gt;Reattach to the Tmux session by typing &lt;code&gt;tmux attach-session -t 0&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;tmux kill-session -t 0&lt;&#x2F;code&gt; to kill that session&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;passwordless-login&quot;&gt;Passwordless Login&lt;a class=&quot;zola-anchor&quot; href=&quot;#passwordless-login&quot; aria-label=&quot;Anchor link for: passwordless-login&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;follow &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;wynton.ucsf.edu&#x2F;hpc&#x2F;howto&#x2F;log-in-without-pwd.html&quot;&gt;this&lt;&#x2F;a&gt; to log in without a password
+use passwd to change password&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;1st-time-setup-hpc&quot;&gt;1st time setup hpc&lt;a class=&quot;zola-anchor&quot; href=&quot;#1st-time-setup-hpc&quot; aria-label=&quot;Anchor link for: 1st-time-setup-hpc&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;add the following script in &lt;code&gt;&#x2F;home&#x2F;testuser&#x2F;.bashrc&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;module&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; load spack&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-support z-function z-source z-shell&quot;&gt;source&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &#x2F;home&#x2F;apps&#x2F;spack&#x2F;share&#x2F;spack&#x2F;setup-env.sh&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;spack&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; load tmux&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;follow &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;docs.excl.ornl.gov&#x2F;quick-start-guides&#x2F;conda-and-spack-installation&quot;&gt;Conda and Spack Installation Guide&lt;&#x2F;a&gt; to setup miniconda in &#x2F;home&#x2F;$USER&#x2F;miniconda3&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;wynton.ucsf.edu&#x2F;hpc&#x2F;howto&#x2F;log-in-without-pwd.html&quot;&gt;ssh using rsa id (passwordless)&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;1st-time-setup-local&quot;&gt;1st time setup local&lt;a class=&quot;zola-anchor&quot; href=&quot;#1st-time-setup-local&quot; aria-label=&quot;Anchor link for: 1st-time-setup-local&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;add this in your .bashrc &lt;code&gt;ssh-keygen -f &quot;&#x2F;c&#x2F;Users&#x2F;msing&#x2F;.ssh&#x2F;known_hosts&quot; -R &quot;[paramganga.iitr.ac.in](http:&#x2F;&#x2F;paramganga.iitr.ac.in&#x2F;)&quot; &amp;amp;&amp;gt; &#x2F;dev&#x2F;null&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;ssh-keygen -R &#x27;[[paramganga.iitr.ac.in](http:&#x2F;&#x2F;paramganga.iitr.ac.in&#x2F;)]:4422&#x27;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;add this in your ~&#x2F;.ssh&#x2F;config file&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; data-name=&quot;~&#x2F;.ssh&#x2F;config&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot; data-name=&quot;~&#x2F;.ssh&#x2F;config&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;Host&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; paramganga.iitr.ac.in&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;HostName&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; paramganga.iitr.ac.in&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;User&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &lt;span class=&quot;z-keyword z-operator z-assignment z-redirection z-shell&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;your_username&lt;span class=&quot;z-keyword z-operator z-assignment z-redirection z-shell&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;IdentityFile&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &lt;span class=&quot;z-meta z-group z-expansion z-tilde&quot;&gt;&lt;span class=&quot;z-variable z-language z-tilde z-shell&quot;&gt;~&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&#x2F;.ssh&#x2F;mac_to_pgiitr&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;UserKnownHostsFile&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &#x2F;dev&#x2F;null&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;  &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; Port 4422&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Add Port 4422&lt;&#x2F;p&gt;
+&lt;p&gt;you might need to manually remove the old host key from &lt;code&gt;~&#x2F;.ssh&#x2F;known_hosts&lt;&#x2F;code&gt; file in some situations&lt;&#x2F;p&gt;
+&lt;p&gt;generate ssh key and copy the public key on pc&lt;&#x2F;p&gt;
+&lt;p&gt;make sure to use comment to hide name of your laptop&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;ssh-keygen -m PEM -f ~&#x2F;.ssh&#x2F;mykey -C &quot;local@default&quot;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;and without passphrase&lt;&#x2F;p&gt;
+&lt;p&gt;for .pem files do → &lt;code&gt;chmod 400 file.pem&lt;&#x2F;code&gt;  (aws)&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;checkout more details and configurations at &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;aakashks&#x2F;dotfiles&quot;&gt;my dotfiles repo&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;more-references&quot;&gt;More References&lt;a class=&quot;zola-anchor&quot; href=&quot;#more-references&quot; aria-label=&quot;Anchor link for: more-references&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;docs.excl.ornl.gov&#x2F;quick-start-guides&#x2F;conda-and-spack-installation&quot;&gt;Conda and Spack Installation Guide (ORNL)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;uvadlc-notebooks.readthedocs.io&#x2F;en&#x2F;latest&#x2F;tutorial_notebooks&#x2F;tutorial1&#x2F;Lisa_Cluster.html&quot;&gt;UVA Deep Learning Cluster Tutorial&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;rc-docs.northeastern.edu&#x2F;en&#x2F;latest&#x2F;software&#x2F;packagemanagers&#x2F;spack.html&quot;&gt;Northeastern HPC Spack Documentation&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;hpc.nmsu.edu&#x2F;discovery&#x2F;slurm&#x2F;gpu-jobs&#x2F;&quot;&gt;NMSU Discovery Cluster: SLURM GPU Jobs&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;3407287&#x2F;how-do-you-edit-files-over-ssh&quot;&gt;How to Mount a Remote File System Locally (Stack Overflow)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;iterm2.com&#x2F;documentation-tmux-integration.html&quot;&gt;iTerm2 tmux Integration Documentation&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;sites.google.com&#x2F;nyu.edu&#x2F;nyu-hpc&#x2F;training-support&#x2F;tutorials&#x2F;slurm-tutorial&quot;&gt;NYU HPC SLURM Tutorial&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;fairshare-priority&quot;&gt;FairShare &#x2F; Priority&lt;a class=&quot;zola-anchor&quot; href=&quot;#fairshare-priority&quot; aria-label=&quot;Anchor link for: fairshare-priority&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Regular use will decrease your fairshare, increasing wait time for next allocation. Hence, use the gpus responsibly&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;curc.readthedocs.io&#x2F;en&#x2F;latest&#x2F;running-jobs&#x2F;slurm-commands.html&quot;&gt;CU Research Computing SLURM Commands&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;hpcf.umbc.edu&#x2F;ada&#x2F;slurm&#x2F;priority&#x2F;&quot;&gt;UMBC Ada Cluster: SLURM Priority&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;docs.rc.fas.harvard.edu&#x2F;kb&#x2F;fairshare&#x2F;&quot;&gt;Harvard FASRC Fairshare Documentation&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;docs.crc.ku.edu&#x2F;how-to&#x2F;fairshare-priority&#x2F;&quot;&gt;KU CRC Fairshare Priority Guide&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>Visual Object Search</title>
+		<published>2025-05-02T00:00:00+00:00</published>
+		<updated>2025-05-02T00:00:00+00:00</updated>
+		<link href="https://aakashks.github.io/posts/mm-rag/" type="text/html"/>
+		<id>https://aakashks.github.io/posts/mm-rag/</id>
+		<content type="html">&lt;p&gt;A CLIP-aided dynamic database to store live information about the world and retrieve it using a Vision Language Model via question answering.&lt;&#x2F;p&gt;
+&lt;p&gt;Keeps track of objects in dynamic environments. A swarm of robots (without GPS) patrol around in the environment and regularly send their observations to a central server.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;assets&#x2F;mm_rag&#x2F;diagram.svg&quot; alt=&quot;diagram&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;assets&#x2F;mm_rag&#x2F;diagram1.svg&quot; alt=&quot;diagram1&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>
